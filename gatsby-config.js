@@ -3,6 +3,18 @@ module.exports = {
     title: "salah-times",
   },
   plugins: [
+    {
+      resolve: "gatsby-source-custom-api",
+      options: {
+        url: "http://ip-api.com/json/",
+      },
+      schemas: {
+        position: `
+          lat: Int
+          lon: Int
+        `,
+      },
+    },
     "gatsby-plugin-emotion",
     "gatsby-plugin-image",
     {
