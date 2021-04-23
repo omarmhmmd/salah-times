@@ -4,11 +4,13 @@ import styled from "@emotion/styled";
 import { cx, css } from "@emotion/css";
 const { PrayerManager } = require("prayer-times.js");
 
-
 /**
  * JS
  */
+
 const Table = (props) => {
+  console.log(props);
+
   // return month full name
   const monthFullName = (month) => {
     var monthName = new Array(
@@ -44,6 +46,9 @@ const Table = (props) => {
   // declare prayer time object and get month times
   let prayTimes = new PrayerManager();
   prayTimes.method = "ISNA"; // set the method : ISNA
+
+  const data = React.useMemo(() => [], []);
+
   let thisMonthTimes = prayTimes.getMonthTimes(
     [new Date().getFullYear(), new Date().getMonth()],
     [props.lat, props.lon],
@@ -52,8 +57,6 @@ const Table = (props) => {
     "24h"
   );
 
-  // create object with monthly prayer times
-  const data = React.useMemo(() => [], []);
   [...Array(daysInMonth - 1)].map((e, i) => {
     data.push({
       day: i + 1,
@@ -64,6 +67,8 @@ const Table = (props) => {
       isha: thisMonthTimes[i][7].formatted,
     });
   });
+
+  // create object with monthly prayer times
 
   function hours12() {
     return (currentDate.getHours() + 24) % 12 || 12;
@@ -89,7 +94,7 @@ const Table = (props) => {
     () => [
       {
         Header: monthFullName(month),
-        accessor: "day", // accessor is the "key" in the data
+        accessor: "day",
       },
       {
         Header: "Fajr",
@@ -125,11 +130,9 @@ const Table = (props) => {
     prepareRow,
   } = useTable({ columns, data });
 
-  // console.log(rows[11]);
-
   const values = [];
   const timeCheck = (rowOriginalDay, value) => {
-    if (rowOriginalDay == date) {
+    if (rowOriginalDay === date) {
       if (value > time24) {
         return true;
       }
@@ -137,14 +140,54 @@ const Table = (props) => {
   };
 
   /**
+   * CSS
+   */
+  const SalahTable = styled.table`
+    font-family: Arial, Helvetica, sans-serif;
+    table-layout: fixed;
+    height: 100%;
+    width: 100%;
+    font-size: 18px;
+  `;
+
+  const SalahHeader = styled.thead`
+    color: white;
+    th {
+      text-align: center;
+			background-color: green;
+      padding: 8px;
+      position: sticky;
+      top: 0;
+      /* border: 1px solid #eeeeee; */
+    }
+  `;
+
+  const SalahBody = styled.tbody``;
+
+  const SalahRow = styled.tr`
+    margin: 10px;
+  `;
+
+  const SalahData = styled.td`
+    text-align: center;
+    /* border: 1px solid #eeeeee; */
+    padding: 8px;
+  `;
+
+  const activeRow = css`
+    background: green;
+    color: white;
+  `;
+
+  const activeCell = css`
+    background: yellow;
+  `;
+
+  /**
    * HTML
    */
   return (
-		
     <>
-      <p>
-        {props.lat}, {props.lon}
-      </p>
       <SalahTable {...getTableProps()}>
         <SalahHeader>
           {headerGroups.map((headerGroup) => (
@@ -160,7 +203,7 @@ const Table = (props) => {
             prepareRow(row);
             return (
               <SalahRow
-                className={cx({ [activeRow]: row.original.day == date })}
+                className={cx({ [activeRow]: row.original.day === date })}
                 {...row.getRowProps()}
               >
                 {row.cells.map((cell) => {
@@ -183,26 +226,5 @@ const Table = (props) => {
     </>
   );
 };
-
-/**
- * CSS
- */
-const SalahTable = styled.table``;
-
-const SalahHeader = styled.thead``;
-
-const SalahBody = styled.tbody``;
-
-const SalahRow = styled.tr``;
-
-const SalahData = styled.td``;
-
-const activeRow = css`
-  background: green;
-`;
-
-const activeCell = css`
-  background: yellow;
-`;
 
 export default Table;
