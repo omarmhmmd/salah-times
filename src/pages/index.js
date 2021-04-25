@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "@emotion/styled";
 import Table from "../components/layout/Table.js";
+import Header from "../components/blocks/Header.js"
 
 const Loader = () => <div></div>;
 
@@ -28,13 +29,7 @@ class TableTest extends React.Component {
   render() {
     return (
       <Container>
-        <HeaderGrid>
-          <div>{this.state.city}</div>
-          <div>Essay</div>
-          <div class = "middle">SalaatTimes</div>
-          <div>Credits</div>
-          <div>Print</div>
-        </HeaderGrid>
+        <Header city={this.state.city}></Header>
         {this.state.loading ? (
           <Loader />
         ) : (
@@ -51,34 +46,12 @@ class TableTest extends React.Component {
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
 
-const HeaderGrid = styled.div`
-  width: 100vw;
-	height: 100px;
-	color: white;
-  display: grid;
-	border-bottom: 1px solid #eeeeee;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 18px;
-  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-	align-items: flex-end;
-
-  div {
-    text-align: center;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-    background-color: green;
-    padding: 8px;
-		height: 20%;
-  }
-	
-	.middle {
-		/* height: 200px; */
-		height: 100%;
-	}
-`;
 
 export default TableTest;

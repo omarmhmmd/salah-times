@@ -9,8 +9,6 @@ const { PrayerManager } = require("prayer-times.js");
  */
 
 const Table = (props) => {
-  console.log(props);
-
   // return month full name
   const monthFullName = (month) => {
     var monthName = new Array(
@@ -124,13 +122,11 @@ const Table = (props) => {
   const {
     getTableProps,
     getTableBodyProps,
-    getTrProps,
     headerGroups,
     rows,
     prepareRow,
   } = useTable({ columns, data });
 
-  const values = [];
   const timeCheck = (rowOriginalDay, value) => {
     if (rowOriginalDay === date) {
       if (value > time24) {
@@ -138,31 +134,39 @@ const Table = (props) => {
       }
     }
   };
-
+	
+  const dateCheck = (value) => {
+		if (value === date)
+		return true;
+  };
   /**
    * CSS
    */
   const SalahTable = styled.table`
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Zeyn";
     table-layout: fixed;
     height: 100%;
-    width: 100%;
-    font-size: 18px;
+    width: var(--width);
+    font-size: 24px;
+    /* border: 1px solid #eeeeee; */
   `;
 
   const SalahHeader = styled.thead`
     color: white;
     th {
       text-align: center;
-			background-color: green;
+      background-color: green;
       padding: 8px;
+      /* color: black; */
       position: sticky;
       top: 0;
       /* border: 1px solid #eeeeee; */
     }
   `;
 
-  const SalahBody = styled.tbody``;
+  const SalahBody = styled.tbody`
+    background-color: white;
+  `;
 
   const SalahRow = styled.tr`
     margin: 10px;
@@ -170,19 +174,25 @@ const Table = (props) => {
 
   const SalahData = styled.td`
     text-align: center;
-    /* border: 1px solid #eeeeee; */
+    border: 1px solid #eeeeee;
     padding: 8px;
+    font-size: 18px;
+    font-family: helvetica;
+    font-weight: lighter;
+    border-radius: 10px;
   `;
 
   const activeRow = css`
-    background: green;
-    color: white;
+    background: lightgreen;
+    color: black;
   `;
 
   const activeCell = css`
-    background: yellow;
+    background: green;
+    font-size: 24px;
+    color: white;
+    font-family: "Zeyn";
   `;
-
   /**
    * HTML
    */
@@ -207,6 +217,18 @@ const Table = (props) => {
                 {...row.getRowProps()}
               >
                 {row.cells.map((cell) => {
+                  if (typeof cell.value == "number") {
+                    return (
+                      <SalahData
+                        className={cx({
+                          [activeCell]: dateCheck(row.original.day, cell.value),
+                        })}
+                        {...cell.getCellProps()}
+                      >
+                        {cell.render("Cell")}
+                      </SalahData>
+                    );
+                  }
                   return (
                     <SalahData
                       className={cx({
