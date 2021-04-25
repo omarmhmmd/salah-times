@@ -2,6 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useTable } from "react-table";
 import styled from "@emotion/styled";
 import { cx, css } from "@emotion/css";
+import * as Scroll from "react-scroll";
+import {
+  Link,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller,
+} from "react-scroll";
+import moment from 'moment';
 const { PrayerManager } = require("prayer-times.js");
 
 /**
@@ -52,8 +62,9 @@ const Table = (props) => {
     [props.lat, props.lon],
     "auto",
     "auto",
-    "24h"
+    "12hNS"
   );
+	
 
   [...Array(daysInMonth - 1)].map((e, i) => {
     data.push({
@@ -93,30 +104,38 @@ const Table = (props) => {
       {
         Header: monthFullName(month),
         accessor: "day",
+        arabic: "",
       },
       {
         Header: "Fajr",
         accessor: "fajr",
+        arabic: "فجر",
       },
       {
         Header: "Dhuhr",
         accessor: "dhuhr",
+        arabic: "ظهر",
       },
       {
         Header: "Asr",
         accessor: "asr",
+        arabic: "عصر",
       },
       {
         Header: "Mahgrib",
         accessor: "maghrib",
+        arabic: "مغرب",
       },
       {
         Header: "Isha",
         accessor: "isha",
+        arabic: "عشاء",
       },
     ],
     []
   );
+
+  // console.log(columns);
 
   // set react table
   const {
@@ -127,17 +146,22 @@ const Table = (props) => {
     prepareRow,
   } = useTable({ columns, data });
 
-  const timeCheck = (rowOriginalDay, value) => {
+  const timeCheck = (rowOriginalDay, value, prayer) => {
+		let newValue
+		if (prayer == "Fajr") {
+			newValue = moment(value + " AM", ["h:mm A"]);
+		} else newValue = moment(value + " PM", ["h:mm A"]);
+    const momentObj = moment(newValue, ["h:mm A"]);
     if (rowOriginalDay === date) {
-      if (value > time24) {
+      if (momentObj.format("HH:mm") > time24) {
+				// console.log(momentObj.format("HH:mm"));
         return true;
       }
     }
   };
-	
+
   const dateCheck = (value) => {
-		if (value === date)
-		return true;
+    if (value === date) return true;
   };
   /**
    * CSS
@@ -153,8 +177,9 @@ const Table = (props) => {
 
   const SalahHeader = styled.thead`
     color: white;
+    width: 100%;
+    text-align: center;
     th {
-      text-align: center;
       background-color: green;
       padding: 8px;
       /* color: black; */
@@ -193,17 +218,47 @@ const Table = (props) => {
     color: white;
     font-family: "Zeyn";
   `;
+
+  const timeBtn = css`
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 24px;
+    padding: 12px;
+    background: lightgreen;
+    font-size: 18px;
+    /* font-size: 24px; */
+    border-radius: 10px;
+    /* font-family: "zeyn"; */
+    font-family: helvetica;
+    font-weight: lighter;
+    color: black;
+    cursor: pointer;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+  `;
+
   /**
    * HTML
    */
   return (
     <>
+      <Link
+        className={timeBtn}
+        to="css-vjxvfr-activeRow"
+        spy={true}
+        smooth={true}
+        duration={250}
+      >
+        {monthFullName(month)} {date}
+      </Link>
       <SalahTable {...getTableProps()}>
         <SalahHeader>
           {headerGroups.map((headerGroup) => (
             <SalahRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                <th {...column.getHeaderProps()}>
+                  {column.render("arabic")} {column.render("Header")}
+                </th>
               ))}
             </SalahRow>
           ))}
@@ -232,7 +287,7 @@ const Table = (props) => {
                   return (
                     <SalahData
                       className={cx({
-                        [activeCell]: timeCheck(row.original.day, cell.value),
+                        [activeCell]: timeCheck(row.original.day, cell.value, cell.column.Header),
                       })}
                       {...cell.getCellProps()}
                     >
