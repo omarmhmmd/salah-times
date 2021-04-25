@@ -15,14 +15,14 @@ class TableTest extends React.Component {
   };
 
   componentDidMount() {
-    fetch(`http://ip-api.com/json/`)
+    fetch(`http://api.ipstack.com/check?access_key=2b82842a731fbec1a7b76c49b638d9c7`)
       .then((response) => response.json())
       .then((resultData) => {
         this.setState((state) => ({
-          lat: resultData.lat,
-          lon: resultData.lon,
+          lat: resultData.latitude,
+          lon: resultData.longitude,
           city: resultData.city,
-          region: resultData.region,
+          region: resultData.region_code,
           loading: false,
         }));
       });

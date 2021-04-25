@@ -11,7 +11,7 @@ import {
   scrollSpy,
   scroller,
 } from "react-scroll";
-import moment from 'moment';
+import moment from "moment";
 const { PrayerManager } = require("prayer-times.js");
 
 /**
@@ -64,7 +64,6 @@ const Table = (props) => {
     "auto",
     "12hNS"
   );
-	
 
   [...Array(daysInMonth - 1)].map((e, i) => {
     data.push({
@@ -147,14 +146,14 @@ const Table = (props) => {
   } = useTable({ columns, data });
 
   const timeCheck = (rowOriginalDay, value, prayer) => {
-		let newValue
-		if (prayer == "Fajr") {
-			newValue = moment(value + " AM", ["h:mm A"]);
-		} else newValue = moment(value + " PM", ["h:mm A"]);
+    let newValue;
+    if (prayer == "Fajr") {
+      newValue = moment(value + " AM", ["h:mm A"]);
+    } else newValue = moment(value + " PM", ["h:mm A"]);
     const momentObj = moment(newValue, ["h:mm A"]);
     if (rowOriginalDay === date) {
       if (momentObj.format("HH:mm") > time24) {
-				// console.log(momentObj.format("HH:mm"));
+        // console.log(momentObj.format("HH:mm"));
         return true;
       }
     }
@@ -234,7 +233,7 @@ const Table = (props) => {
     font-weight: lighter;
     color: black;
     cursor: pointer;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   `;
 
   /**
@@ -245,9 +244,8 @@ const Table = (props) => {
       <Link
         className={timeBtn}
         to="css-vjxvfr-activeRow"
-        spy={true}
         smooth={true}
-        duration={250}
+        duration={500}
       >
         {monthFullName(month)} {date}
       </Link>
@@ -287,7 +285,11 @@ const Table = (props) => {
                   return (
                     <SalahData
                       className={cx({
-                        [activeCell]: timeCheck(row.original.day, cell.value, cell.column.Header),
+                        [activeCell]: timeCheck(
+                          row.original.day,
+                          cell.value,
+                          cell.column.Header
+                        ),
                       })}
                       {...cell.getCellProps()}
                     >
