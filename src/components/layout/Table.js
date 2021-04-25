@@ -53,7 +53,7 @@ const Table = (props) => {
 
   // declare prayer time object and get month times
   let prayTimes = new PrayerManager();
-  prayTimes.method = "ISNA"; // set the method : ISNA
+  prayTimes.method = "MWL"; 
 
   const data = React.useMemo(() => [], []);
 
@@ -243,7 +243,7 @@ const Table = (props) => {
     <>
       <Link
         className={timeBtn}
-        to="activeRow"
+        to="firstInsideContainer"
         smooth={true}
         duration={500}
       >
@@ -261,6 +261,9 @@ const Table = (props) => {
             </SalahRow>
           ))}
         </SalahHeader>
+				<Element name="firstInsideContainer">
+            first element inside container
+          </Element>
         <SalahBody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);

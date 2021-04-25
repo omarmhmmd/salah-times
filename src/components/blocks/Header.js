@@ -7,8 +7,9 @@ const Header = (props) => {
   var date = new Date();
   var coordinates = new adhan.Coordinates(props.lat, props.lon);
   var params = adhan.CalculationMethod.MuslimWorldLeague();
-  params.madhab = adhan.Madhab.Hanafi;
+  params.madhab = adhan.Madhab.Shafi;
   var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+	console.log(prayerTimes);
   var current = prayerTimes.currentPrayer();
   var next = prayerTimes.nextPrayer();
   // console.log(next);
