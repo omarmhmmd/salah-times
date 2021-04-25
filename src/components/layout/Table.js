@@ -243,7 +243,7 @@ const Table = (props) => {
     <>
       <Link
         className={timeBtn}
-        to="css-vjxvfr-activeRow"
+        to="activeRow"
         smooth={true}
         duration={500}
       >
