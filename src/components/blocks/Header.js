@@ -17,7 +17,8 @@ const Header = (props) => {
     <HeaderGrid>
       <div>
         <h1 className="city">
-          {props.city}, {props.region}
+          {props.city} 
+					{/* {props.region} */}
         </h1>
       </div>
       <div>Essay</div>
