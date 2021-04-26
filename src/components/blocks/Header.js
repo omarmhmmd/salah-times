@@ -22,9 +22,12 @@ const Header = (props) => {
           {/* {props.region} */}
         </h1>
       </div>
+      <div id="cityMobile">{props.city}</div>
       <div id="essay">Essay</div>
       <div id="middle" className="middle">
-        <h1>Salaat سلاة</h1>
+        <h1>
+				سلاة<br className="mobileBreak"></br> Salaat
+        </h1>
         <section>
           <h3>Currently </h3>
           <h2>{current}</h2>
@@ -32,7 +35,9 @@ const Header = (props) => {
         </section>
       </div>
       <div id="credits">Credits</div>
-      <div id="print">Print</div>
+      <div onClick={() => window.print()} id="print">
+        Print
+      </div>
     </HeaderGrid>
   );
 };
@@ -40,6 +45,10 @@ const Header = (props) => {
 const HeaderGrid = styled.div`
   width: var(--width);
   height: 25vh;
+  @media print {
+    height: 12.5vh;
+    width: 75vw;
+  }
   color: white;
   display: grid;
   /* border-bottom: 1px solid #eeeeee; */
@@ -47,7 +56,7 @@ const HeaderGrid = styled.div`
   text-transform: uppercase;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
   @media (max-width: 1024px) {
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
   align-items: flex-end;
 
@@ -58,8 +67,22 @@ const HeaderGrid = styled.div`
     }
   }
 
+  #cityMobile {
+    display: none;
+    @media print {
+      display: inline-flex;
+    }
+  }
+
+  #print {
+    cursor: pointer;
+  }
+
   div {
     font-size: 24px;
+    @media print {
+      font-size: 20px;
+    }
     text-align: center;
     display: flex;
     justify-content: center;
@@ -74,8 +97,24 @@ const HeaderGrid = styled.div`
       outline: 1px solid white;
     }
   }
+
+  #essay {
+    @media print {
+      display: none;
+    }
+  }
+
+  #city {
+    @media print {
+      display: none;
+    }
+  }
+
   .city {
     padding: 12px;
+    @media print {
+      margin-top: 25px;
+    }
     font-size: 18px;
     font-family: helvetica;
     font-weight: lighter;
@@ -87,9 +126,18 @@ const HeaderGrid = styled.div`
   }
 
   .middle {
+    .mobileBreak {
+      display: none;
+      @media print {
+        display: block;
+      }
+    }
     /* height: 200px; */
     font-family: "Zeyn";
     height: 75%;
+    @media print {
+      height: 75%;
+    }
     /* @media (max-width: 1024px) {
       height: 50%;
     } */
@@ -101,6 +149,9 @@ const HeaderGrid = styled.div`
 
     h1 {
       font-size: 48px;
+      @media print {
+        font-size: 30px;
+      }
     }
     section {
       display: flex;

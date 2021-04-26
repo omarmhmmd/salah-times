@@ -11,11 +11,16 @@ class TableTest extends React.Component {
     lon: undefined,
     city: undefined,
     loading: true,
-		curTime: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+    curTime: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
   };
 
   componentDidMount() {
-    fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=86810ca751f4469687a21a4ac2655357&ip=8.8.8.8`)
+    fetch(
+      `https://api.ipgeolocation.io/ipgeo?apiKey=86810ca751f4469687a21a4ac2655357&ip=8.8.8.8`
+    )
       .then((response) => response.json())
       .then((resultData) => {
         this.setState((state) => ({
@@ -27,11 +32,11 @@ class TableTest extends React.Component {
         }));
       });
 
-    // setInterval(() => {
-    //   this.setState({
-    //     curTime: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-    //   });
-    // }, 1000);
+    setInterval(() => {
+      this.setState({
+        curTime: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+      });
+    }, 1000);
   }
 
   render() {
@@ -42,7 +47,7 @@ class TableTest extends React.Component {
           lon={this.state.lon}
           city={this.state.city}
           region={this.state.region}
-					time = {this.state.curTime}
+          time={this.state.curTime}
         ></Header>
         {this.state.loading ? (
           <Loader />

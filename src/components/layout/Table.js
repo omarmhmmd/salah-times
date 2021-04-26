@@ -147,12 +147,17 @@ const Table = (props) => {
 
   const timeCheck = (rowOriginalDay, value, prayer) => {
     let newValue;
+		let fajrValue;
     if (prayer == "Fajr") {
-      newValue = moment(value + " AM", ["h:mm A"]);
+      newValue= moment(value + " AM", ["h:mm A"]);
     } else newValue = moment(value + " PM", ["h:mm A"]);
     const momentObj = moment(newValue, ["h:mm A"]);
+		// console.log(momentObj.format("HH:mm"));
     if (rowOriginalDay === date) {
-      if (momentObj.format("HH:mm") > time24) {
+			if (time24 > momentObj.format("HH:mm")) {
+				return true;
+			}
+      else if (momentObj.format("HH:mm") > time24) {
         // console.log(momentObj.format("HH:mm"));
         return true;
       }
@@ -171,6 +176,9 @@ const Table = (props) => {
     height: 100%;
     width: var(--width);
     font-size: 24px;
+    @media print {
+      font-size: 22px;
+    }
     /* border: 1px solid #eeeeee; */
   `;
 
@@ -179,23 +187,30 @@ const Table = (props) => {
     width: 100%;
     text-align: center;
     .monthHeader {
-			span {
-				display:none;
-				@media (max-width: 1024px) {
-					display: inline;
-					font-family: helvetica;
-					font-weight: lighter;
-					font-size: 14px;
-				
-				}
-			}
+      span {
+        display: none;
+        @media (max-width: 1024px) {
+          display: inline;
+          font-family: helvetica;
+          font-weight: lighter;
+          font-size: 14px;
+        }
+        @media print {
+          display: none;
+        }
+      }
     }
     th {
       background-color: green;
       padding: 8px;
+			@media print {
+      font-size: 18px;
+			
+    }
       /* color: black; */
       position: sticky;
       top: 0;
+
       /* border: 1px solid #eeeeee; */
       h1 {
       }
@@ -215,6 +230,10 @@ const Table = (props) => {
     border: 1px solid #eeeeee;
     padding: 8px;
     font-size: 18px;
+		@media print {
+      font-size: 14px;
+			padding: 6px;
+    }
     font-family: helvetica;
     font-weight: lighter;
     border-radius: 10px;
@@ -223,16 +242,31 @@ const Table = (props) => {
   const activeRow = css`
     background: lightgreen;
     color: black;
+		@media print {
+     
+			background: none;
+		
+    }
   `;
 
   const activeCell = css`
     background: green;
     font-size: 24px;
+		@media print {
+      font-size: 14px;
+			font-family: helvetica;
+			font-weight: lighter;
+			background: none;
+			color: black;
+    }
     color: white;
     font-family: "Zeyn";
   `;
 
   const timeBtn = css`
+    @media print {
+      display: none;
+    }
     position: fixed;
     right: 0;
     bottom: 0;
@@ -262,7 +296,8 @@ const Table = (props) => {
         offset={-50}
         duration={500}
       >
-        {monthFullName(month)} {date}
+        {/* {monthFullName(month)} {date} */}
+        Today
       </Link>
       <SalahTable {...getTableProps()}>
         <SalahHeader>
@@ -324,6 +359,7 @@ const Table = (props) => {
                       {...cell.getCellProps()}
                     >
                       {cell.render("Cell")}
+											
                     </SalahData>
                   );
                 })}
