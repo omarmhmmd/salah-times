@@ -4,11 +4,15 @@
   font-family: "Farisi";
   src: url("fonts/Farisi.ttf");
 }
-
 @font-face {
   font-family: "Zeyn";
   src: url("fonts/29LTZeyn-Light.otf");
 }
+@font-face {
+  font-family: "Nastaliq";
+  src: url("fonts/NotoNastaliqUrdu-Regular.ttf");
+}
+
 :root {
   /* Fonts */
   --fontFamily-sans: Arial;
@@ -29,4 +33,5 @@
 
   /* Spacing */
 	--width: 100%;
+	--mobileWidth: 420px;
 }

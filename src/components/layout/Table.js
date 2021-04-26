@@ -53,7 +53,7 @@ const Table = (props) => {
 
   // declare prayer time object and get month times
   let prayTimes = new PrayerManager();
-  prayTimes.method = "MWL";
+  prayTimes.method = "ISNA";
 
   const data = React.useMemo(() => [], []);
 
@@ -103,7 +103,7 @@ const Table = (props) => {
       {
         Header: monthFullName(month),
         accessor: "day",
-        arabic: "",
+        arabic: "  ",
       },
       {
         Header: "Fajr",
@@ -178,6 +178,18 @@ const Table = (props) => {
     color: white;
     width: 100%;
     text-align: center;
+    .monthHeader {
+			span {
+				display:none;
+				@media (max-width: 1024px) {
+					display: inline;
+					font-family: helvetica;
+					font-weight: lighter;
+					font-size: 14px;
+				
+				}
+			}
+    }
     th {
       background-color: green;
       padding: 8px;
@@ -185,6 +197,8 @@ const Table = (props) => {
       position: sticky;
       top: 0;
       /* border: 1px solid #eeeeee; */
+      h1 {
+      }
     }
   `;
 
@@ -223,17 +237,17 @@ const Table = (props) => {
     right: 0;
     bottom: 0;
     margin: 24px;
-    padding: 12px;
-    background: lightgreen;
     font-size: 18px;
-    /* font-size: 24px; */
-    border-radius: 10px;
-    /* font-family: "zeyn"; */
-    font-family: helvetica;
+    font-family: Helvetica, sans-serif;
     font-weight: lighter;
+    background-color: lightgreen;
     color: black;
+    padding: 24px;
+    border-top-left-radius: 100vw;
+    border-top-right-radius: 100vw;
     cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    box-shadow: 0 4px 10px rgba(41, 98, 24, 0.25),
+      0 4px 10px rgba(0, 0, 0, 0.25);
   `;
 
   /**
@@ -254,11 +268,20 @@ const Table = (props) => {
         <SalahHeader>
           {headerGroups.map((headerGroup) => (
             <SalahRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>
-                  {column.render("arabic")} {column.render("Header")}
-                </th>
-              ))}
+              {headerGroup.headers.map((column) => {
+                if (column.Header == monthFullName(month)) {
+                  return (
+                    <th className="monthHeader" {...column.getHeaderProps()}>
+                      <span>Month</span> {column.render("Header")}
+                    </th>
+                  );
+                }
+                return (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("arabic")} {column.render("Header")}
+                  </th>
+                );
+              })}
             </SalahRow>
           ))}
         </SalahHeader>

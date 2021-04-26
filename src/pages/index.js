@@ -27,11 +27,11 @@ class TableTest extends React.Component {
         }));
       });
 
-    setInterval(() => {
-      this.setState({
-        curTime: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-      });
-    }, 1000);
+    // setInterval(() => {
+    //   this.setState({
+    //     curTime: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+    //   });
+    // }, 1000);
   }
 
   render() {
