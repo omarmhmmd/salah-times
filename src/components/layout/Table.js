@@ -53,7 +53,7 @@ const Table = (props) => {
 
   // declare prayer time object and get month times
   let prayTimes = new PrayerManager();
-  prayTimes.method = "MWL"; 
+  prayTimes.method = "MWL";
 
   const data = React.useMemo(() => [], []);
 
@@ -243,8 +243,9 @@ const Table = (props) => {
     <>
       <Link
         className={timeBtn}
-        to="firstInsideContainer"
+        to="selectedRow"
         smooth={true}
+        offset={-50}
         duration={500}
       >
         {monthFullName(month)} {date}
@@ -261,14 +262,17 @@ const Table = (props) => {
             </SalahRow>
           ))}
         </SalahHeader>
-				<Element name="firstInsideContainer">
-            first element inside container
-          </Element>
         <SalahBody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
+            let selected;
+            if (row.original.day === date) {
+              selected = "selectedRow";
+            } else selected = "";
+
             return (
               <SalahRow
+                name={selected}
                 className={cx({ [activeRow]: row.original.day === date })}
                 {...row.getRowProps()}
               >
